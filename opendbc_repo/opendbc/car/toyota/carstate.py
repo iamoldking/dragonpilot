@@ -79,7 +79,11 @@ class CarState(CarStateBase):
     else:
       cp_acc = cp_cam if self.CP.carFingerprint in (TSS2_CAR - RADAR_ACC_CAR) else cp
 
-    if not self.CP.flags & ToyotaFlags.SECOC.value:
+    # dp - Prius c has no VSC1S07 (0x320). Reading it would register the message in
+    # the parser, which then times out and invalidates the bus. gvc only feeds the
+    # PERMIT_BRAKING blend in carcontroller, which this car has no actuator for.
+    if not self.CP.flags & ToyotaFlags.SECOC.value and \
+       self.CP.carFingerprint != CAR.TOYOTA_PRIUS_C:
       self.gvc = cp.vl["VSC1S07"]["GVC"]
 
     ret.doorOpen = any([cp.vl["BODY_CONTROL_STATE"]["DOOR_OPEN_FL"], cp.vl["BODY_CONTROL_STATE"]["DOOR_OPEN_FR"],
