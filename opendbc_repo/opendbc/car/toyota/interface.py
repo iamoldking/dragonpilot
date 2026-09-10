@@ -146,6 +146,11 @@ class CarInterface(CarInterfaceBase):
       sdsu_active or \
         dsu_bypass)
 
+    # dp - Prius c has no factory ACC at all, so there is no stock longitudinal to
+    # defer to. Placed before the dp toggle below so the user can still force it off.
+    if candidate == CAR.TOYOTA_PRIUS_C:
+      ret.openpilotLongitudinalControl = True
+
     if dp_params & structs.DPFlags.ToyotaStockLon:
       ret.openpilotLongitudinalControl = False
       ret.alphaLongitudinalAvailable = False
@@ -157,6 +162,9 @@ class CarInterface(CarInterfaceBase):
 
     # min speed to enable ACC. if car can do stop and go, then set enabling speed
     # to a negative value, so it won't matter.
+    # dp - Prius c: no factory ACC means no low speed engage limit to respect
+    if candidate == CAR.TOYOTA_PRIUS_C:
+      stop_and_go = True
     ret.minEnableSpeed = -1. if stop_and_go else MIN_ACC_SPEED
 
     if candidate in TSS2_CAR:

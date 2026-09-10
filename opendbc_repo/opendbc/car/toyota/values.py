@@ -248,6 +248,15 @@ class CAR(Platforms):
     CarSpecs(mass=3340. * CV.LB_TO_KG, wheelbase=2.78, steerRatio=17.4, tireStiffnessFactor=0.5533),
     dbc_dict('toyota_new_mc_pt_generated', 'toyota_adas'),
   )
+  # dp - Toyota Prius c (Aqua, NHP10). Not supported upstream; select it from the
+  # dp car model menu (Settings > Device), which sets FINGERPRINT + SKIP_FW_QUERY.
+  # No radar dbc on purpose: TSS-C uses a laser sensor, not mmWave, so leaving
+  # Bus.radar out makes interface.py set radarUnavailable = True by itself.
+  TOYOTA_PRIUS_C = PlatformConfig(
+    [ToyotaCarDocs("Toyota Prius c 2012-21")],
+    CarSpecs(mass=1130., wheelbase=2.55, steerRatio=14.6, tireStiffnessFactor=0.444),
+    {Bus.pt: 'toyota_new_mc_pt_generated'},
+  )
   TOYOTA_PRIUS_TSS2 = ToyotaTSS2PlatformConfig(
     [
       ToyotaCarDocs("Toyota Prius 2021-22", video="https://www.youtube.com/watch?v=J58TvCpUd4U"),
@@ -593,7 +602,8 @@ STEER_THRESHOLD = 100
 
 # These cars have non-standard EPS torque scale factors. All others are 73
 EPS_SCALE = defaultdict(lambda: 73,
-                        {CAR.TOYOTA_PRIUS: 66, CAR.TOYOTA_COROLLA: 88, CAR.LEXUS_IS: 77, CAR.LEXUS_RC: 77, CAR.LEXUS_CTH: 100, CAR.TOYOTA_PRIUS_V: 100})
+                        {CAR.TOYOTA_PRIUS: 66, CAR.TOYOTA_COROLLA: 88, CAR.LEXUS_IS: 77, CAR.LEXUS_RC: 77, CAR.LEXUS_CTH: 100, CAR.TOYOTA_PRIUS_V: 100,
+                         CAR.TOYOTA_PRIUS_C: 88})
 
 # Toyota/Lexus Safety Sense 2.0 and 2.5
 TSS2_CAR = CAR.with_flags(ToyotaFlags.TSS2)
