@@ -20,3 +20,9 @@ if [ -z "$AGNOS_VERSION" ]; then
 fi
 
 export STAGING_ROOT="/data/safe_staging"
+
+# dp - Prius c (NHP10): force the car model for this branch. Overrides the
+# dp car model menu (dp_dev_model_selected), which is read later in
+# launch_chffrplus.sh's set_model_fingerprint().
+export FINGERPRINT="TOYOTA_PRIUS_C"
+export SKIP_FW_QUERY=1
